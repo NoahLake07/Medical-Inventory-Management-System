@@ -11,7 +11,7 @@ The Medical Inventory Management System (MIMS) is brought to you by Noah Lake an
 
 Noah Lake brings years of experience in app development, with proficiency in Java, C# (.NET), Python, and HTML. His expertise ensures the smooth functionality and robustness of the MIMS application.
 
-Jaxon Powers does [insert blurp here]
+Jaxon Powers is passionate about programming and hardware engineering, with proficiency in Java, HTML, and CSS. He brings creative ideas into the many features of the MIMS application.
 
 ## Full Documentation
 We document the whole outlining and development of this program through a Google Document. This document includes everything from why we chose the languages we did to how each application process works in detail. UML Diagrams, UI Wireframes/Outlines, and API sources are all found in this documentation. This complete app development documentation can be found [here.](https://docs.google.com/document/d/1lMO6Go0bJFZlWDcyRJqDzPIzKcAqdgisxubFtSE5wgg/edit?usp=sharing) 

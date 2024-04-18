@@ -32,8 +32,37 @@ public class Date implements Comparable {
      * returns -2 if an error occurs.
      */
     @Override
-    public int compareTo(Object date2) {
-        Date o1 = (Date) date2;
-        return -2; //todo finish this
+    public int compareTo(Object obj) {
+        if (obj instanceof Date) {
+            Date date2 = (Date) obj;
+
+            // Compare year first
+            if (this.year < date2.year) {
+                return -1;
+            } else if (this.year > date2.year) {
+                return 1;
+            }
+
+            // If years are the same, compare months
+            if (this.month < date2.month) {
+                return -1;
+            } else if (this.month > date2.month) {
+                return 1;
+            }
+
+            // If months are also the same, compare days
+            if (this.day < date2.day) {
+                return -1;
+            } else if (this.day > date2.day) {
+                return 1;
+            }
+
+            // All fields are equal
+            return 0;
+        } else {
+            // Typically, you would throw an exception for comparing different types
+            throw new IllegalArgumentException("Object must be of type Date");
+        }
     }
+
 }

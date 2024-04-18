@@ -73,7 +73,7 @@ public class HelpDialogue {
         frame.add(sendPanel, BorderLayout.SOUTH);
 
         sendBtn.addActionListener(e->{
-            JOptionPane.showMessageDialog(frame,"Message Sent Successfully.");1219
+            JOptionPane.showMessageDialog(frame,"Message Sent Successfully.");
         });
 
         frame.setSize(400, 300);

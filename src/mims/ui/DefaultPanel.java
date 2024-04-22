@@ -15,6 +15,7 @@ public class DefaultPanel extends JPanel {
         super();
 
         header = new JLabel("Default Panel");
+        header.setFont(H1);
 
         super.setLayout(new BoxLayout(this,BoxLayout.Y_AXIS));
 
@@ -25,38 +26,15 @@ public class DefaultPanel extends JPanel {
 
     public void setHeader(String s){
         header.setText(s);
-        header.setFont(H1);
+
     }
 
-    @Override
-    public Component add(Component j){
-        content.add(j);
-        return j;
-    }
+   public void setContent(JPanel content){
 
-    public void setVisible (boolean b){
-        content.setVisible(true);
-    }
+        this.content.removeAll();
 
-    public void setLayout(LayoutManager layout) {
-        if(content!=null) content.setLayout(layout);
-        else super.setLayout(layout);
-    }
-
-    // Method to set the border
-    public void setBorder(Border border) {
-        content.setBorder(border);
-    }
-
-    // Method to set the background color
-    public void setBackground(Color color) {
-        content.setBackground(color);
-    }
-
-    // Method to set the foreground color
-    public void setForeground(Color color) {
-        content.setForeground(color);
-    }
+        this.content.add(content);
+   }
 
 
 }

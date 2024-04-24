@@ -6,20 +6,27 @@ import java.awt.*;
 
 public class DefaultPanel extends JPanel {
 
-    public static final Font H1=new Font("Arial",Font.BOLD,36);
-    public static final Font H2 = new Font("Arial",Font.BOLD,28);
-    public static final Font Paragraph = new Font("Arial",Font.PLAIN,16);
+    public static final Font H1=new Font("Arial",Font.BOLD,48);
+    public static final Font H2 = new Font("Arial",Font.BOLD,36);
+    public static final Font Paragraph = new Font("Arial",Font.PLAIN,20);
     JLabel header;
+    JPanel headerPanel = new JPanel();
     JPanel content = new JPanel();
     public DefaultPanel(){
         super();
 
         header = new JLabel("Default Panel");
         header.setFont(H1);
+        headerPanel.add(header);
 
         super.setLayout(new BoxLayout(this,BoxLayout.Y_AXIS));
+        setBorder(BorderFactory.createEmptyBorder(10,10,10,10));
+        header.setBorder(BorderFactory.createEmptyBorder(0,10,10,10));
+        headerPanel.setLayout(new FlowLayout(FlowLayout.LEFT));
+        headerPanel.setMaximumSize(new Dimension(Short.MAX_VALUE, 68));
+        content.setBackground(Color.BLACK);
 
-        add(header);
+        add(headerPanel);
         add(content);
 
     }

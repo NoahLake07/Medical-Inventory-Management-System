@@ -20,8 +20,8 @@ public class HelpDialogue {
 
         headerPanel = new JPanel();
         headerPanel.setLayout(new FlowLayout(FlowLayout.CENTER));
-        headerPanel.setMaximumSize(new Dimension(Short.MAX_VALUE, 91));
-        headerPanel.setBorder(BorderFactory.createEmptyBorder(30, 0, 20, 0));
+        headerPanel.setMaximumSize(new Dimension(Short.MAX_VALUE, 78));
+        headerPanel.setBorder(BorderFactory.createEmptyBorder(20, 0, 10, 0));
         JLabel headerLbl = new JLabel("Contact");
         headerLbl.setFont(DefaultPanel.H1);
         headerPanel.add(headerLbl);
@@ -32,7 +32,7 @@ public class HelpDialogue {
 
         JPanel namePanel = new JPanel();
         namePanel.setLayout(new FlowLayout(FlowLayout.CENTER));
-        namePanel.setMaximumSize(new Dimension(Short.MAX_VALUE, 29));
+        namePanel.setMaximumSize(new Dimension(Short.MAX_VALUE, 25));
         namePanel.setBorder(BorderFactory.createEmptyBorder(0, 0, 5, 0));
         JLabel nameLbl = new JLabel("Name");
         nameLbl.setFont(DefaultPanel.Paragraph);
@@ -43,7 +43,7 @@ public class HelpDialogue {
 
         JPanel emailPanel = new JPanel();
         emailPanel.setLayout(new FlowLayout(FlowLayout.CENTER));
-        emailPanel.setMaximumSize(new Dimension(Short.MAX_VALUE, 29));
+        emailPanel.setMaximumSize(new Dimension(Short.MAX_VALUE, 25));
         emailPanel.setBorder(BorderFactory.createEmptyBorder(0, 0, 5, 0));
         JLabel emailLbl = new JLabel("Email");
         emailLbl.setFont(DefaultPanel.Paragraph);
@@ -54,8 +54,8 @@ public class HelpDialogue {
 
         JPanel inquiryPanel = new JPanel();
         inquiryPanel.setLayout(new FlowLayout(FlowLayout.CENTER));
-        inquiryPanel.setMaximumSize(new Dimension(Short.MAX_VALUE, 29));
-        inquiryPanel.setBorder(BorderFactory.createEmptyBorder(0, 0, 5, 0));
+        inquiryPanel.setMaximumSize(new Dimension(Short.MAX_VALUE, 50));
+        inquiryPanel.setBorder(BorderFactory.createEmptyBorder(0, 0, 15, 0));
         JLabel inquiryLbl = new JLabel("Inquiry");
         inquiryLbl.setFont(DefaultPanel.Paragraph);
         inquiry = new JTextField(11);

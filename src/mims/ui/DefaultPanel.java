@@ -1,7 +1,8 @@
 package mims.ui;
 
+import mims.MIMS;
+
 import javax.swing.*;
-import javax.swing.border.Border;
 import java.awt.*;
 
 public class DefaultPanel extends JPanel {
@@ -9,9 +10,11 @@ public class DefaultPanel extends JPanel {
     public static final Font H1=new Font("Arial",Font.BOLD,48);
     public static final Font H2 = new Font("Arial",Font.BOLD,36);
     public static final Font Paragraph = new Font("Arial",Font.PLAIN,20);
-    JLabel header;
-    JPanel headerPanel = new JPanel();
-    JPanel content = new JPanel();
+
+    private MIMS.UIController controller;
+   private JLabel header;
+   private JPanel headerPanel = new JPanel();
+   private JPanel content = new JPanel();
     public DefaultPanel(){
         super();
 
@@ -28,6 +31,10 @@ public class DefaultPanel extends JPanel {
 
         add(headerPanel);
         add(content);
+
+    }
+
+    public void setController(MIMS.UIController controller){
 
     }
 

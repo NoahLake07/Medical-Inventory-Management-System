@@ -3,8 +3,6 @@ package mims.ui;
 import javax.swing.*;
 import java.awt.*;
 
-import javax.swing.*;
-import java.awt.*;
 
 public class HelpDialogue {
 
@@ -12,7 +10,6 @@ public class HelpDialogue {
     private JPanel headerPanel, inputPanel, sendPanel;
     private JButton sendBtn;
     private JTextField name, email, inquiry;
-    private Font lblFont = new Font("Arial", Font.PLAIN, 16);
 
     public HelpDialogue() {
         frame = new JFrame("Help");

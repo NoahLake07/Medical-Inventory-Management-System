@@ -1,5 +1,6 @@
 package mims;
 
+import com.formdev.flatlaf.themes.FlatMacLightLaf;
 import mims.ui.HelpDialogue;
 
 import javax.swing.*;
@@ -17,6 +18,13 @@ public class MIMS extends JFrame {
      * Default constructor for MIMS
      */
     public MIMS(){
+
+        try {
+            UIManager.setLookAndFeel(new FlatMacLightLaf());
+        } catch (UnsupportedLookAndFeelException e) {
+            throw new RuntimeException(e);
+        }
+
         this.setTitle("MIMS v1.0");
         this.setName("MIMS 2024");
         this.setSize(800, 600);

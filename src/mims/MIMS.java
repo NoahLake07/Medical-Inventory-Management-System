@@ -13,6 +13,7 @@ public class MIMS extends JFrame {
     public static UIController uiController;
 
     JPanel settingsMenu; // for the settings sub-menu
+    boolean subMenuVisible = false;
 
     /**
      * Default constructor for MIMS
@@ -28,7 +29,7 @@ public class MIMS extends JFrame {
         this.setTitle("MIMS v1.0");
         this.setName("MIMS 2024");
         this.setSize(800, 600);
-        this.setUndecorated(true);
+        this.setUndecorated(false);
         this.setExtendedState(JFrame.MAXIMIZED_BOTH);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
@@ -52,7 +53,7 @@ public class MIMS extends JFrame {
 
         // SETUP MENU BAR
         sideBar = new JPanel();
-        sideBar.setMaximumSize(new Dimension((int) this.getWidth()/3,Short.MAX_VALUE));
+
         sideBar.setBackground(Color.LIGHT_GRAY);
         sideBar.setLayout(new BoxLayout(sideBar, BoxLayout.Y_AXIS));
 
@@ -62,7 +63,7 @@ public class MIMS extends JFrame {
         mainFunctions.setLayout(new BoxLayout(mainFunctions, BoxLayout.Y_AXIS));
             JButton dashboard = new JButton("Dashboard");
             dashboard.addActionListener(e->uiController.setPage("dashboard"));
-            mainFunctions.add(dashboard);
+            settingsMenu.add(dashboard);
 
             JButton operations = new JButton("Operations");
             operations.addActionListener(e->uiController.setPage("operations"));
@@ -71,22 +72,17 @@ public class MIMS extends JFrame {
             JButton settings = new JButton("Settings");
                 Runnable r = () -> {
                     // toggle visibility of settings sub-menu
-                    if(settingsMenu.isVisible())
-                        settingsMenu.setVisible(false);
-                    else if(!settingsMenu.isVisible()){
-                        settingsMenu.setVisible(true);
-                    }
+                    
 
                     // set the main panel to the first settings sub-menu item
                     uiController.setPage("dpl configuration"); };
             settings.addActionListener(l->r.run());
-            mainFunctions.add(settings);
+            settingsMenu.add(settings);
 
             JButton notifications = new JButton("Notifications");
             notifications.addActionListener(e->uiController.setPage("notifications"));
-            mainFunctions.add(notifications);
-        sideBar.add(mainFunctions);
-
+            settingsMenu.add(notifications);
+            sideBar.add(settingsMenu);
 
         // CONFIGURE SPLIT PANE
         splitPane.setLeftComponent(sideBar);

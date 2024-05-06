@@ -53,41 +53,41 @@ public class MIMS extends JFrame {
 
         // SETUP MENU BAR
         sideBar = new JPanel();
-
-        sideBar.setBackground(Color.LIGHT_GRAY);
+        sideBar.setBackground(new Color(187, 202, 211));
         sideBar.setLayout(new BoxLayout(sideBar, BoxLayout.Y_AXIS));
+        sideBar.setSize(new Dimension(400, this.getHeight()));
+
+        // SETUP MENU HEADER
+        JLabel header = new JLabel("MIMS");
+        header.setFont(new Font("Arial", Font.BOLD, 24));
+        header.setAlignmentX(Component.CENTER_ALIGNMENT);
+        header.setHorizontalAlignment(JLabel.CENTER); // Center the header
+        sideBar.add(header);
+        header.setMaximumSize(new Dimension(Short.MAX_VALUE,50));
 
         // SETUP MENU ITEMS
-        settingsMenu = new JPanel();
         JPanel mainFunctions = new JPanel();
         mainFunctions.setLayout(new BoxLayout(mainFunctions, BoxLayout.Y_AXIS));
-            JButton dashboard = new JButton("Dashboard");
-            dashboard.addActionListener(e->uiController.setPage("dashboard"));
-            settingsMenu.add(dashboard);
 
-            JButton operations = new JButton("Operations");
-            operations.addActionListener(e->uiController.setPage("operations"));
-            mainFunctions.add(operations);
+        // Create an array of button names
+        String[] buttonNames = {"Dashboard", "Operations", "Settings", "Notifications"};
 
-            JButton settings = new JButton("Settings");
-                Runnable r = () -> {
-                    // toggle visibility of settings sub-menu
-                    
-
-                    // set the main panel to the first settings sub-menu item
-                    uiController.setPage("dpl configuration"); };
-            settings.addActionListener(l->r.run());
-            settingsMenu.add(settings);
-
-            JButton notifications = new JButton("Notifications");
-            notifications.addActionListener(e->uiController.setPage("notifications"));
-            settingsMenu.add(notifications);
-            sideBar.add(settingsMenu);
+        // Iterate over the button names, creating a button for each one
+        for (String buttonName : buttonNames) {
+            JButton button = new JButton(buttonName);
+            button.setFont(new Font("Arial", Font.PLAIN, 18)); // Set a more professional-looking font
+            button.setMaximumSize(new Dimension(Short.MAX_VALUE, 50)); // Make the button span the entire width of the sidebar
+            button.addActionListener(e -> uiController.setPage(buttonName.toLowerCase()));
+            sideBar.add(button);
+        }
 
         // CONFIGURE SPLIT PANE
         splitPane.setLeftComponent(sideBar);
         splitPane.setRightComponent(currentPage);
         this.add(splitPane);
+
+        // INITIALIZE SETTINGS PANE
+
     }
 
     public boolean isDevMode(){

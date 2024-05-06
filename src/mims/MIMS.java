@@ -2,6 +2,7 @@ package mims;
 
 import com.formdev.flatlaf.themes.FlatMacLightLaf;
 import mims.ui.HelpDialogue;
+import mims.ui.panel.*;
 
 import javax.swing.*;
 import java.awt.*;
@@ -55,7 +56,7 @@ public class MIMS extends JFrame {
         sideBar = new JPanel();
         sideBar.setBackground(new Color(187, 202, 211));
         sideBar.setLayout(new BoxLayout(sideBar, BoxLayout.Y_AXIS));
-        sideBar.setSize(new Dimension(400, this.getHeight()));
+        sideBar.setMaximumSize(new Dimension(450, this.getHeight()));
 
         // SETUP MENU HEADER
         JLabel header = new JLabel("MIMS");
@@ -81,13 +82,16 @@ public class MIMS extends JFrame {
             sideBar.add(button);
         }
 
+        initializeUIPanels();
+
         // CONFIGURE SPLIT PANE
         splitPane.setLeftComponent(sideBar);
         splitPane.setRightComponent(currentPage);
         this.add(splitPane);
+    }
 
-        // INITIALIZE SETTINGS PANE
-
+    private void initializeUIPanels(){
+        uiController.initUIPanels();
     }
 
     public boolean isDevMode(){
@@ -103,12 +107,34 @@ public class MIMS extends JFrame {
         private JPanel currentPage = new JPanel();
         private MIMS parent;
 
+        public DashboardPanel dashboardPanel;
+        public NotificationsPanel notificationsPanel;
+        public OperationsPanel operationsPanel;
+            public NotificationsSettingsPanel notificationsSettingsPanel;
+            public ProductManagerPanel productManagerPanel;
+            public UISettingsPanel uiSettingsPanel;
+            public DPLConfigPanel dplConfigPanel;
+            public DataHandlerPanel dataHandlerPanel;
+        public SettingsPanel settingsPanel;
+
         public UIController(MIMS parent){
             this.parent = parent;
         }
 
         public MIMS getParent(){
             return this.parent;
+        }
+
+        public void initUIPanels(){
+            dashboardPanel = new DashboardPanel();
+            dataHandlerPanel = new DataHandlerPanel();
+            notificationsPanel = new NotificationsPanel();
+            notificationsSettingsPanel = new NotificationsSettingsPanel();
+            operationsPanel = new OperationsPanel();
+            productManagerPanel = new ProductManagerPanel();
+            uiSettingsPanel = new UISettingsPanel();
+            dplConfigPanel = new DPLConfigPanel();
+            settingsPanel = new SettingsPanel();
         }
 
         /**
@@ -151,43 +177,47 @@ public class MIMS extends JFrame {
             switch(page){
                 case "dashboard":
                     if(parent.isDevMode()) System.out.println("page changed -> dashboard");
-                    //todo implement dashboard
+                    setPage(dashboardPanel);
                     break;
                 case "operations":
                     if(parent.isDevMode()) System.out.println("page changed -> operations");
-                    //todo implement operations
+                    setPage(operationsPanel);
                     break;
                 case "dpl configuration":
                     if(parent.isDevMode()) System.out.println("page changed -> dpl config");
-                    //todo implement dpl config
+                    setPage(dplConfigPanel);
                     break;
                 case "user interface":
                     if(parent.isDevMode()) System.out.println("page changed -> ui settings");
-                    //todo implement ui settings
+                    setPage(uiSettingsPanel);
                     break;
                 case "product management":
                     if(parent.isDevMode()) System.out.println("page changed -> product management");
-                    //todo implement product management settings
+                    setPage(productManagerPanel);
                     break;
                 case "notification settings":
                     if(parent.isDevMode()) System.out.println("page changed -> notification settings");
-                    //todo implement notification settings
+                    setPage(notificationsSettingsPanel);
                     break;
                 case "automatic report generator":
                     if(parent.isDevMode()) System.out.println("page changed -> auto report generator");
-                    //todo implement ARP settings
+                    setPage(dataHandlerPanel);
                     break;
                 case "data auto saver":
                     if(parent.isDevMode()) System.out.println("page changed -> data autosave settings");
-                    //todo implement data auto save settings
+                    setPage(dataHandlerPanel);
                     break;
                 case "notifications":
-                    //todo implement notifications
+                    setPage(notificationsPanel);
                     if(parent.isDevMode()) System.out.println("page changed -> notifications");
                     break;
                 case "help":
                     if(parent.isDevMode()) System.out.println("opened dialogue -> help");
                     new HelpDialogue();
+                    break;
+                case "settings":
+                    if(parent.isDevMode()) System.out.println("page changed -> settings");
+                    setPage(settingsPanel);
                     break;
                 default:
                     throw new IllegalArgumentException("Invalid page: " + page);

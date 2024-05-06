@@ -9,7 +9,6 @@ public class Test {
 
     public static void main(String[] args) {
 
-
         try {
             UIManager.setLookAndFeel(new FlatLightLaf());
         } catch (UnsupportedLookAndFeelException e) {

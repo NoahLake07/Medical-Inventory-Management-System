@@ -27,7 +27,6 @@ public class DefaultPanel extends JPanel {
         header.setBorder(BorderFactory.createEmptyBorder(0,10,10,10));
         headerPanel.setLayout(new FlowLayout(FlowLayout.LEFT));
         headerPanel.setMaximumSize(new Dimension(Short.MAX_VALUE, 68));
-        content.setBackground(Color.BLACK);
 
         add(headerPanel);
         add(content);
@@ -35,12 +34,11 @@ public class DefaultPanel extends JPanel {
     }
 
     public void setController(MIMS.UIController controller){
-
+        this.controller = controller;
     }
 
     public void setHeader(String s){
         header.setText(s);
-
     }
 
    public void setContent(JPanel content){

@@ -13,8 +13,8 @@ public class DefaultPanel extends JPanel {
 
     private MIMS.UIController controller;
    private JLabel header;
-   private JPanel headerPanel = new JPanel();
-   private JPanel content = new JPanel();
+   protected JPanel headerPanel = new JPanel();
+   protected JPanel content = new JPanel();
     public DefaultPanel(){
         super();
 

@@ -4,16 +4,13 @@ import mims.ui.DefaultPanel;
 
 import javax.swing.*;
 
-public class DataHandlerPanel extends DefaultPanel {
+import static mims.ui.DefaultPanel.H1;
+
+public class DataHandlerPanel {
     private JLabel dataHandlerLabel;
-    private JPanel dataHandlerContent;
+    private JToggleButton autoReportGenerator;
 
     public DataHandlerPanel() {
-        super();
-        dataHandlerLabel = new JLabel("Data Handler");
-        dataHandlerLabel.setFont(H1);
-        headerPanel.add(dataHandlerLabel);
-        dataHandlerContent = new JPanel();
-        content.add(dataHandlerContent);
+
     }
 }

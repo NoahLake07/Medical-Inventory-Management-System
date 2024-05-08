@@ -7,23 +7,26 @@ import java.awt.*;
 
 public class DefaultPanel extends JPanel {
 
-    public static final Font H1=new Font("Arial",Font.BOLD,48);
-    public static final Font H2 = new Font("Arial",Font.BOLD,36);
-    public static final Font Paragraph = new Font("Arial",Font.PLAIN,20);
+    public static final Font H1=new Font("Arial",Font.BOLD,42);
+    public static final Font H2 = new Font("Arial",Font.BOLD,32);
+    public static final Font H3 = new Font("Arial",Font.BOLD,26);
+    public static final Font Paragraph = new Font("Arial",Font.PLAIN,18);
 
     private MIMS.UIController controller;
    private JLabel header;
    protected JPanel headerPanel = new JPanel();
    protected JPanel content = new JPanel();
-    public DefaultPanel(){
+
+
+   public DefaultPanel(){
         super();
 
-        header = new JLabel("Default Panel");
+        header = new JLabel("");
         header.setFont(H1);
         headerPanel.add(header);
 
         super.setLayout(new BoxLayout(this,BoxLayout.Y_AXIS));
-        setBorder(BorderFactory.createEmptyBorder(10,10,10,10));
+        setBorder(BorderFactory.createEmptyBorder(20,10,10,10));
         header.setBorder(BorderFactory.createEmptyBorder(0,10,10,10));
         headerPanel.setLayout(new FlowLayout(FlowLayout.LEFT));
         headerPanel.setMaximumSize(new Dimension(Short.MAX_VALUE, 68));

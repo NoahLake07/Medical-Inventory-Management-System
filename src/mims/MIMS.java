@@ -3,6 +3,7 @@ package mims;
 import com.formdev.flatlaf.themes.FlatMacLightLaf;
 import mims.ui.HelpDialogue;
 import mims.ui.panel.*;
+import mims.ui.panel.subsettings.*;
 
 import javax.swing.*;
 import java.awt.*;
@@ -37,6 +38,7 @@ public class MIMS extends JFrame {
         uiController = new UIController(this);
         setupUI();
 
+        uiController.setPage("dashboard");
         this.setVisible(true);
     }
 
@@ -54,9 +56,9 @@ public class MIMS extends JFrame {
 
         // SETUP MENU BAR
         sideBar = new JPanel();
-        sideBar.setBackground(new Color(187, 202, 211));
+        sideBar.setBackground(new Color(225, 239, 255));
         sideBar.setLayout(new BoxLayout(sideBar, BoxLayout.Y_AXIS));
-        sideBar.setMaximumSize(new Dimension(450, this.getHeight()));
+        sideBar.setMaximumSize(new Dimension(1000, this.getHeight()));
 
         // SETUP MENU HEADER
         JLabel header = new JLabel("MIMS");
@@ -67,16 +69,10 @@ public class MIMS extends JFrame {
         header.setMaximumSize(new Dimension(Short.MAX_VALUE,50));
 
         // SETUP MENU ITEMS
-        JPanel mainFunctions = new JPanel();
-        mainFunctions.setLayout(new BoxLayout(mainFunctions, BoxLayout.Y_AXIS));
-
-        // Create an array of button names
         String[] buttonNames = {"Dashboard", "Operations", "Settings", "Notifications"};
-
-        // Iterate over the button names, creating a button for each one
         for (String buttonName : buttonNames) {
             JButton button = new JButton(buttonName);
-            button.setFont(new Font("Arial", Font.PLAIN, 18)); // Set a more professional-looking font
+            button.setFont(new Font("Arial", Font.PLAIN, 14)); // Set a more professional-looking font
             button.setMaximumSize(new Dimension(Short.MAX_VALUE, 50)); // Make the button span the entire width of the sidebar
             button.addActionListener(e -> uiController.setPage(buttonName.toLowerCase()));
             sideBar.add(button);
@@ -86,6 +82,8 @@ public class MIMS extends JFrame {
 
         // CONFIGURE SPLIT PANE
         splitPane.setLeftComponent(sideBar);
+        splitPane.setDividerLocation(getWidth()/4);
+        splitPane.setContinuousLayout(true);
         splitPane.setRightComponent(currentPage);
         this.add(splitPane);
     }
@@ -142,8 +140,10 @@ public class MIMS extends JFrame {
          * @param page
          */
         private void setPage(JPanel page){
+            int dividerLocation = parent.splitPane.getDividerLocation(); // Store the current divider location
             this.currentPage = page;
             parent.setRightComponent(currentPage);
+            parent.splitPane.setDividerLocation(dividerLocation);
         }
 
         /**

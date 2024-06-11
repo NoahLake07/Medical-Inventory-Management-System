@@ -73,7 +73,7 @@ public class MIMS extends JFrame {
         for (String buttonName : buttonNames) {
             JButton button = new JButton(buttonName);
             button.setFont(new Font("Arial", Font.PLAIN, 14)); // Set a more professional-looking font
-            button.setMaximumSize(new Dimension(Short.MAX_VALUE, 50)); // Make the button span the entire width of the sidebar
+            //button.setMaximumSize(new Dimension(Short.MAX_VALUE, 50)); // Make the button span the entire width of the sidebar
             button.addActionListener(e -> uiController.setPage(buttonName.toLowerCase()));
             sideBar.add(button);
         }

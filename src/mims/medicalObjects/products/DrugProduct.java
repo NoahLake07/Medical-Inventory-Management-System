@@ -28,8 +28,7 @@ public class DrugProduct implements Drug {
     @Override
     public int compareTo(MedicalObject obj) {
         DrugProduct product1 = (DrugProduct) obj;
-        //return product1.getExpirationDate().compareTo(this.getExpirationDate());
-        return -1;
+        return product1.getExpirationDate().compareTo(this.getExpirationDate());
     }
 
     @Override

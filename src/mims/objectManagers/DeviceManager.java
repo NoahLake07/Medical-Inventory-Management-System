@@ -10,8 +10,8 @@ import java.util.List;
 public class DeviceManager implements ObjectManager {
 
     String name, desc;
-
     private ArrayList<DeviceProduct> deviceProducts;
+    private int parLevel = ObjectManager.DEFAULT_PAR_LEVEL;
 
     public DeviceManager(String name, String desc){
         this.name = name;
@@ -19,8 +19,8 @@ public class DeviceManager implements ObjectManager {
         this.deviceProducts = new ArrayList<>();
     }
 
-    public DeviceManager(File JsonSaveFile){
-        // TODO use the file save/load class to get data
+    public DeviceManager(File jsonSaveFile){
+        // TODO use the file iomanager class to get data
     }
 
     /**
@@ -38,26 +38,30 @@ public class DeviceManager implements ObjectManager {
 
     @Override
     public void add(MedicalObject obj) {
-
+        deviceProducts.add((DeviceProduct) obj);
     }
 
     @Override
     public void remove(String id) {
-
+        for (DeviceProduct deviceProduct : deviceProducts) {
+            if (deviceProduct.getID().equals(id)) {
+                deviceProducts.remove(deviceProduct);
+                break;
+            }
+        }
     }
 
     @Override
     public int getCount() {
-        return 0;
+        return deviceProducts.size();
     }
 
     @Override
     public int getParLevel() {
-        return 0;
+        return this.parLevel;
     }
 
-    @Override
-    public List<MedicalObject> getStock() {
-        return null;
+    public List<DeviceProduct> getStock() {
+        return deviceProducts;
     }
 }

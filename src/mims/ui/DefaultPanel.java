@@ -11,8 +11,7 @@ public class DefaultPanel extends JPanel {
     public static final Font H2 = new Font("Arial",Font.BOLD,32);
     public static final Font H3 = new Font("Arial",Font.BOLD,26);
     public static final Font Paragraph = new Font("Arial",Font.PLAIN,18);
-
-    private MIMS.UIController controller;
+    MIMS.UIController controller;
    private JLabel header;
    protected JPanel headerPanel = new JPanel();
    protected JPanel content = new JPanel();
@@ -38,6 +37,10 @@ public class DefaultPanel extends JPanel {
 
     public void setController(MIMS.UIController controller){
         this.controller = controller;
+    }
+
+    public MIMS.UIController getController(){
+        return controller;
     }
 
     public void setHeader(String s){

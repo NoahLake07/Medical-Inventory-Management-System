@@ -1,12 +1,20 @@
 package mims;
 
+import com.formdev.flatlaf.FlatDarkLaf;
+import com.formdev.flatlaf.FlatLightLaf;
 import com.formdev.flatlaf.themes.FlatMacLightLaf;
+import mims.data.Inventory;
+import mims.data.app.MIMSEnv;
+import mims.data.app.UISettings;
 import mims.ui.HelpDialogue;
 import mims.ui.panel.*;
 import mims.ui.panel.subsettings.*;
 
 import javax.swing.*;
 import java.awt.*;
+import java.nio.file.Files;
+
+import static mims.IOManager.devMode;
 
 public class MIMS extends JFrame {
 
@@ -17,23 +25,18 @@ public class MIMS extends JFrame {
     JPanel settingsMenu; // for the settings sub-menu
     boolean subMenuVisible = false;
 
+    // APP DATA
+    private Inventory inventory;
+    private UISettings uiSettings;
+    private DPL dpl;
+    private MIMSEnv mimsEnv;
+
     /**
      * Default constructor for MIMS
      */
     public MIMS(){
-
-        try {
-            UIManager.setLookAndFeel(new FlatMacLightLaf());
-        } catch (UnsupportedLookAndFeelException e) {
-            throw new RuntimeException(e);
-        }
-
-        this.setTitle("MIMS v1.0");
-        this.setName("MIMS 2024");
-        this.setSize(800, 600);
-        this.setUndecorated(false);
-        this.setExtendedState(JFrame.MAXIMIZED_BOTH);
-        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        basicSetup();
+        loadAssets();
 
         uiController = new UIController(this);
         setupUI();
@@ -42,12 +45,13 @@ public class MIMS extends JFrame {
         this.setVisible(true);
     }
 
-    /**
-     * Constructor for MIMS that takes command line arguments
-     * @param args
-     */
-    public MIMS(String[] args){
-        //todo finish implementation (starting the app from reading the app's root directory
+    private void basicSetup(){
+        this.setTitle("MIMS v1.0");
+        this.setName("MIMS 2024");
+        this.setSize(800, 600);
+        this.setUndecorated(false);
+        this.setExtendedState(JFrame.MAXIMIZED_BOTH);
+        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }
 
     private void setupUI(){
@@ -93,7 +97,72 @@ public class MIMS extends JFrame {
     }
 
     public boolean isDevMode(){
-        return true; //todo connect this to the static IOManager, which will actually fetch the env variable
+        return devMode;
+    }
+
+    private void loadAssets(){
+        // DISPLAY LOADING DIALOG
+        JDialog dialog = new JDialog(this, "Loading...", true);
+        dialog.setLayout(new BorderLayout());
+        dialog.setSize(200, 100);
+        dialog.setLocationRelativeTo(null);
+        dialog.setDefaultCloseOperation(JDialog.DO_NOTHING_ON_CLOSE);
+        dialog.setUndecorated(true);
+        dialog.getContentPane().setBackground(new Color(230, 238, 255));
+
+        JLabel loadLabel = new JLabel("MIMS v1.0...");
+        loadLabel.setHorizontalAlignment(JLabel.CENTER);
+        loadLabel.setFont(new Font("Arial", Font.BOLD, 16));
+        dialog.add(loadLabel, BorderLayout.CENTER);
+
+        JProgressBar progressBar = new JProgressBar();
+        progressBar.setIndeterminate(true);
+        dialog.add(progressBar, BorderLayout.SOUTH);
+
+        SwingWorker<Void, Void> worker = new SwingWorker<Void, Void>() {
+            @Override
+            protected Void doInBackground() {
+                // INITIALIZE IO MANAGER
+                IOManager ioManager = new IOManager();
+                ioManager.verifyInit();
+
+                // ALLOW BUFFER TIME
+                try {
+                    Thread.sleep(2000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+
+                // UTILIZE IO MANAGER TO LOAD ASSETS
+                mimsEnv = ioManager.loadMIMSEnv();
+                inventory = ioManager.loadInventory();
+                uiSettings = ioManager.loadUISettings();
+                dpl = ioManager.loadDPL();
+
+                return null;
+            }
+
+            @Override
+            protected void done() {
+                // CLOSE LOADING DIALOG
+                dialog.dispose();
+
+                // SET THE UI SETTINGS
+                if(uiSettings != null){
+                    try {
+                        if(uiSettings.getTheme().equals(UISettings.Theme.LIGHT))
+                            UIManager.setLookAndFeel(new FlatLightLaf());
+                        else
+                            UIManager.setLookAndFeel(new FlatDarkLaf());
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        };
+
+        worker.execute();
+        dialog.setVisible(true);
     }
 
     void setRightComponent(JPanel panel){
@@ -135,6 +204,10 @@ public class MIMS extends JFrame {
             settingsPanel = new SettingsPanel();
         }
 
+        public void saveSettings(){
+            // TODO save settings to static objects inside MIMS class (the settings will control the vars in the MIMS class)
+        }
+
         /**
          * A method to only be called from within the UIController class to set the page.
          * @param page
@@ -153,7 +226,6 @@ public class MIMS extends JFrame {
         public void setPage(String page){
 
             /*
-
             AVAILABLE PAGES:
             - dashboard
             - operations
@@ -171,7 +243,6 @@ public class MIMS extends JFrame {
                 - data auto saver
             - notifications
             - help (opens a dialogue with a form to submit a help request)
-
              */
 
             switch(page){
@@ -227,11 +298,8 @@ public class MIMS extends JFrame {
     }
 
     public static void main(String[] args) {
-        if(args.length > 0){
-            new MIMS(args);
-        } else {
-            new MIMS();
-        }
+        new DevPanel();
+        new MIMS();
     }
 
 }

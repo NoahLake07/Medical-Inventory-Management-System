@@ -28,6 +28,10 @@ public class SettingsPanel extends DefaultPanel {
         settingsContent.addTab("User Interface", uiController.uiSettingsPanel);
         settingsContent.addTab("Notifications", uiController.notificationsSettingsPanel);
         this.content.add( settingsContent, BorderLayout.CENTER);
+
+        JButton saveBtn = new JButton("Save");
+        this.content.add(saveBtn, BorderLayout.SOUTH);
+        saveBtn.addActionListener(e -> super.getController().saveSettings());
     }
 
 }

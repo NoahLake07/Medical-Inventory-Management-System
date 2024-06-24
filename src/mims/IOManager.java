@@ -6,90 +6,148 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import mims.data.Inventory;
+import mims.data.app.MIMSEnv;
+import mims.data.app.UISettings;
+
+import java.io.File;
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+
 public class IOManager {
 
-    private boolean devMode = false;
-    private final File dataDirectory;
-    public static final String APP_FOLDER_PATH = System.getenv("APPDATA") + "/" + "MIMS_Data";
-    public static final String ENV_FILE_PATH = APP_FOLDER_PATH + "/ENV/";
+    public static boolean devMode = true;
+    private static final String DATA_DIR = System.getenv("APPDATA") + "/MIMS_Data";
+    private static final String INVENTORY_FILE = DATA_DIR + "/inventory.json";
+    private static final String UISETTINGS_FILE = DATA_DIR + "/uisettings.json";
+    private static final String DPLCONFIG_FILE = DATA_DIR + "/dplconfig.json";
+    private static final String MIMSENV_FILE = DATA_DIR + "/mimsenv";
 
-    private File envFile,UIFile,inventoryFile,DPLFile;
+    private ObjectMapper objectMapper;
 
     public IOManager() {
-        // Define the directory path for MIMS_Data under the user's Program Files directory
-        String programFiles = System.getenv("APPDATA");
-        dataDirectory = new File(programFiles, "MIMS_Data");
+        objectMapper = new ObjectMapper();
+        ensureDataDirectoryExists();
+    }
 
-        // Check if the directory exists and create it if it doesn't
-        if (!dataDirectory.exists()) {
-            boolean wasCreated = dataDirectory.mkdirs();
-            if (wasCreated) {
-                System.out.println("Directory created successfully at " + programFiles);
-                try {
-                    createEnvFile();
-                } catch (IOException e) {
-                    System.out.println("Failed to create environment file.");
-                }
-            } else {
-                System.out.println("Failed to create directory. Check permissions.");
-            }
+    private void ensureDataDirectoryExists() {
+        File dir = new File(DATA_DIR);
+        if (!dir.exists()) {
+            dir.mkdirs();
+        }
+    }
+
+    public void saveInventory(Inventory inventory) {
+        saveToFile(INVENTORY_FILE, inventory);
+    }
+
+    public Inventory loadInventory() {
+        if(Files.exists(Paths.get(INVENTORY_FILE))) {
+            return loadFromFile(INVENTORY_FILE, Inventory.class);
         } else {
-            // If the directory exists, load data from it
-            loadFromFile(dataDirectory);
+            if(devMode) System.out.println("> No Inventory file found, creating new one...");
+            return new Inventory();
         }
     }
 
-    private void loadFromFile(File directory) {
-        // Implementation to load data from the directory
-        System.out.println("Loading data from " + directory.getPath());
-        // todo Add actual file loading logic here
+    public void saveUISettings(UISettings settings) {
+        saveToFile(UISETTINGS_FILE, settings);
     }
 
-    private void updateFileReferences(){
-        if(Files.exists(Paths.get(ENV_FILE_PATH))){
-            envFile = new File(ENV_FILE_PATH);
+    public UISettings loadUISettings() {
+        if(Files.exists(Paths.get(UISETTINGS_FILE))) {
+            return loadFromFile(UISETTINGS_FILE, UISettings.class);
+        } else {
+            if(devMode) System.out.println("> No UISettings file found, creating new one...");
+            return new UISettings();
         }
-        // todo add static constants with other file paths
-        // todo update references for other files
     }
 
-    private void createEnvFile() throws IOException {
-        File env = new File(ENV_FILE_PATH);
-        FileWriter writer = new FileWriter(env);
-
-        // by default, the envFile will have devMode set to false (0);
-        writer.append("0\n");
-
-        // close the file
-        writer.close();
-
-        this.envFile = env;
+    public void saveDPL(DPL dpl) {
+        saveToFile(DPLCONFIG_FILE, dpl);
     }
 
-    public File getUIFile(){
-        updateFileReferences();
-        return this.UIFile;
+    public DPL loadDPL() {
+        if(Files.exists(Paths.get(DPLCONFIG_FILE))) {
+            return loadFromFile(DPLCONFIG_FILE, DPL.class);
+        } else {
+            if(devMode) System.out.println("> No DPL file found, creating new one...");
+            return new DPL();
+        }
     }
 
-    public File getInventoryFile(){
-        updateFileReferences();
-        return inventoryFile;
+    public void saveMIMSEnv(MIMSEnv env) {
+        saveToFile(MIMSENV_FILE, env);
     }
 
-    public File getDPLFile(){
-        updateFileReferences();
-        return DPLFile;
+    public MIMSEnv loadMIMSEnv() {
+        if(Files.exists(Paths.get(MIMSENV_FILE))) {
+            MIMSEnv mimsenv = loadFromFile(MIMSENV_FILE, MIMSEnv.class);
+            this.devMode = mimsenv.isDevMode();
+            return mimsenv;
+        } else {
+            if(devMode) System.out.println("> No MIMSEnv file found, creating new one...");
+            return new MIMSEnv();
+        }
     }
 
-    public File getEnvFile(){
-        updateFileReferences();
-        return DPLFile;
+    public void saveAll(DPL dpl, Inventory inventory, UISettings settings, MIMSEnv env) {
+        saveDPL(dpl);
+        saveInventory(inventory);
+        saveUISettings(settings);
+        saveMIMSEnv(env);
     }
 
-    // ! FOR TESTING PURPOSES ONLY
-    public static void main(String[] args) {
-        new IOManager();
+    public void verifyInit() {
+        if(Files.exists(Paths.get(MIMSENV_FILE))) {
+            if(devMode) System.out.println("> MIMSEnv file found.");
+        } else {
+            if(devMode) System.out.println("> No MIMSEnv file found, creating new one...");
+            saveMIMSEnv(new MIMSEnv());
+        }
+
+        if(Files.exists(Paths.get(INVENTORY_FILE))) {
+            if(devMode) System.out.println("> Inventory file found.");
+        } else {
+            if(devMode) System.out.println("> No Inventory file found, creating new one...");
+            saveInventory(new Inventory());
+        }
+
+        if(Files.exists(Paths.get(UISETTINGS_FILE))) {
+            if(devMode) System.out.println("> UISettings file found.");
+        } else {
+            if(devMode) System.out.println("> No UISettings file found, creating new one...");
+            saveUISettings(new UISettings());
+        }
+
+        if(Files.exists(Paths.get(DPLCONFIG_FILE))) {
+            if(devMode) System.out.println("> DPL file found.");
+        } else {
+            if(devMode) System.out.println("> No DPL file found, creating new one...");
+            saveDPL(new DPL());
+        }
+    }
+
+    private <T> void saveToFile(String filePath, T object) {
+        try {
+            objectMapper.writeValue(new File(filePath), object);
+        } catch (IOException e) {
+            throw new RuntimeException("Failed to save data to file: " + filePath, e);
+        }
+    }
+
+    private <T> T loadFromFile(String filePath, Class<T> clazz) {
+        byte[] encoded = new byte[0];
+        try {
+            encoded = Files.readAllBytes(Paths.get(filePath));
+            String content = new String(encoded, StandardCharsets.UTF_8);
+            return objectMapper.readValue(content, clazz);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
     }
 }
-
-

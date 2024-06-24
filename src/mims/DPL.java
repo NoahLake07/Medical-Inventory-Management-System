@@ -10,9 +10,6 @@ public class DPL {
         root = new Node(null);
     }
 
-    // todo add a constructor that's loaded from a file
-    // may need to make this class serializable unless JSON implementations are used
-
     class Container extends Node {
         private String objectID;
         public Container(Container c, String type){

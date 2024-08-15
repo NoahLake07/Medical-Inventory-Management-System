@@ -200,8 +200,10 @@ public class MIMS extends JFrame {
             operationsPanel = new OperationsPanel();
             productManagerPanel = new ProductManagerPanel();
             uiSettingsPanel = new UISettingsPanel();
-            dplConfigPanel = new DPLConfigPanel();
+            dplConfigPanel = new DPLConfigPanel(dpl);
+
             settingsPanel = new SettingsPanel();
+            settingsPanel.setController(this);
         }
 
         public void saveSettings(){

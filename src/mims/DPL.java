@@ -1,49 +1,85 @@
 package mims;
+
+import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.ArrayList;
 import java.util.List;
 
 public class DPL {
+    @JsonProperty("root")
+    private Container root;
 
-    private Node root;
-
-    DPL(){
-        root = new Node(null);
+    public DPL(){
+        root = new Container(null, "Root");
     }
 
-    class Container extends Node {
+    public Container getRoot() {
+        return root;
+    }
+
+    // Nested classes
+    public static class Node {
+        @JsonProperty("children")
+        private List<Node> children;
+
+        public Node() {
+            children = new ArrayList<>();
+        }
+
+        public void addChild(Node child) {
+            children.add(child);
+        }
+
+        public List<Node> getChildren() {
+            return new ArrayList<>(children);
+        }
+    }
+
+    public static class Container extends Node {
+        @JsonProperty("objectID")
         private String objectID;
-        public Container(Container c, String type){
-            super(c);
-            this.objectID = type;
+        @JsonProperty("items")
+        private List<Item> items;
+
+        public Container() {
+            super();
+            items = new ArrayList<>();
         }
 
-        void setObjectType(String type){
-            this.objectID = type;
+        public Container(Container parent, String id){
+            super();
+            this.objectID = id;
+            items = new ArrayList<>();
         }
 
-        String getObjectType(){
-            return this.objectID;
-        }
-    }
-
-    private class Node{
-        private boolean isRoot = false;
-        private Node parent;
-        private ArrayList<Node> children;
-
-        public Node(Node parent){
-            this.parent = parent;
-            this.children = new ArrayList<>();
-            if(this.parent == null) this.isRoot = true;
+        public String getObjectID(){
+            return objectID;
         }
 
-        void addChild(Node n){
-            this.children.add(n);
+        public void setObjectID(String id){
+            this.objectID = id;
         }
 
-        void removeChild(Node n){
-            this.children.remove(n);
+        public List<Item> getItems() {
+            return new ArrayList<>(items);
+        }
+
+        public void addItem(Item item) {
+            items.add(item);
         }
     }
 
+    public static class Item {
+        @JsonProperty("name")
+        private String name;
+
+        public Item() {}
+
+        public Item(String name) {
+            this.name = name;
+        }
+
+        public String getName() {
+            return name;
+        }
+    }
 }
